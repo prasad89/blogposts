@@ -32,7 +32,7 @@ Now, if you're a rebel who doesn't want to follow the Poetry bandwagon or if you
 
 Alright, let's get down to business and start weaving our Cython cloak. We need to customize the [wheel](https://realpython.com/python-wheels) building process in Poetry. It's like tailoring a bespoke suit for your package. To do this, you'll need to perform some dark incantations in your **pyproject.toml** file:
 
-```toml
+```toml title="pyproject.toml"
 [tool.poetry.build]
 script = "build.py"
 generate-setup-file = false
@@ -42,14 +42,14 @@ Poetry usually relies on your **pyproject.toml** file to create a **setup.py** f
 
 Oh, and by the way, we need to make sure Cython is on our side. We'll add it to our Poetry development dependencies so that only the chosen ones (package developers) have access to its power. You can do this by chanting [**poetry add --dev Cython**](https://python-poetry.org/docs/cli/#add) or by manually inscribing the desired version in the [**tool.poetry.dev-dependencies**](https://python-poetry.org/docs/pyproject/#dependencies-and-dev-dependencies) section and then invoking [**poetry update**](https://python-poetry.org/docs/cli/#update):
 
-```toml
+```toml title="pyproject.toml"
 [tool.poetry.dev-dependencies]
 Cython = "^3.0.0"  # Latest version at the time of publishing
 ```
 
 Lastly, to keep our secret source code truly secret, we need to make sure Poetry doesn't spill the beans. By default, Poetry tosses all files in your project's source directory into the package, including the Python files we want to keep under wraps. To fix this, we have to lay down the law by adding an [**exclude**](https://python-poetry.org/docs/pyproject/#include-and-exclude) key in our tool.poetry section. Just remember, this exclusion is like a matching game, so consult the documentation if you need more clues:
 
-```toml
+```toml title="pyproject.toml"
 [tool.poetry]
 # ...
 exclude = ["SRC/**/*.py"]  # Replace SRC with the root of your source
@@ -66,7 +66,7 @@ Now, let's unveil the mysteries of the **build.py** script – the heart and sou
 
 First things first, let's set the stage. You'll need to adjust the **SOURCE_DIR** variable to match your project's hideout:
 
-```python
+```python title="build.py"
 import multiprocessing
 from pathlib import Path
 from typing import List
@@ -82,7 +82,7 @@ BUILD_DIR = Path("BUILD")
 
 Next, we'll conjure a function that finds all the Python files and transforms them into [Distutils/Setuptools **Extension**](https://docs.python.org/3/distutils/setupscript.html#describing-extension-modules) objects. These are like the secret scrolls that Python build scripts, including Cython, use:
 
-```python
+```python title="build.py"
 def get_extension_modules() -> List[Extension]:
     extension_modules: List[Extension] = []
 
@@ -100,7 +100,7 @@ def get_extension_modules() -> List[Extension]:
 
 Now, let's call upon a function that takes these **Extension** objects and performs the Cython incantation. It uses Cython's [**cythonize**](https://cython.readthedocs.io/en/latest/src/userguide/source_files_and_compilation.html#cythonize-arguments) function, complete with some mystical configurations:
 
-```python
+```python title="build.py"
 def cythonize_helper(extension_modules: List[Extension]) -> List[
 
 Extension]:
@@ -116,7 +116,7 @@ Extension]:
 
 Finally, let's weave the threads of magic together. We'll enlist the Setuptools **Distribution** object to orchestrate the build. It's like conducting a symphony of code:
 
-```python
+```python title="build.py"
 extension_modules = cythonize_helper(get_extension_modules())
 
 # Use Setuptools to collect files
