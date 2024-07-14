@@ -50,7 +50,7 @@ This command fetches Docker like a pro shopper on Black Friday—fast and effici
 
 2. **Dockerfile for DinD**: Crafting a Dockerfile for your DinD container is as delightful as assembling a Lego spaceship. Here's a whimsical example to kickstart your Docker-in-Docker adventure:
 
-```docker
+```dockerfile title="Dockerfile"
 # Using Ubuntu 24.04 as the launchpad
 FROM ubuntu:24.04
 
@@ -98,7 +98,7 @@ This Dockerfile isn't just a recipe; it's a symphony of container orchestration,
 
 3. **Entrypoint Script**: Every container needs a guiding light, and your DinD container is no exception. Behold, a snippet of an entrypoint script that shepherds your DinD container to greatness:
 
-```bash
+```bash title="entrypoint.sh"
 #!/bin/bash
 
 # Function to patiently wait for a process to awaken
@@ -138,7 +138,7 @@ This script is not just a guide; it's a seasoned sherpa ensuring your DinD conta
 
 4. **Supervisor Configuration**: To keep your DinD container in check, you'll want a Supervisor configuration file that supervises like a pro:
 
-```ini
+```ini title="supervisor/dockerd.conf"
 [program:dockerd]
 command=/usr/bin/dockerd
 autostart=true
